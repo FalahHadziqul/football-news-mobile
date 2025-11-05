@@ -66,7 +66,7 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.newspaper),
             title: const Text('View News'),
             onTap: () {
-              // TODO: Tambahkan navigasi ke halaman View News nanti
+              // TODO PRIBADI: Tambahkan navigasi ke halaman View News nanti
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(const SnackBar(
