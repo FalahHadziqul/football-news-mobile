@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:football_news/screens/news_entry_list.dart';
+import '../screens/login.dart';
 import '../screens/newslist_form.dart';
 
 // Pindahkan kelas ItemHomepage karena ItemCard bergantung padanya
@@ -22,7 +25,7 @@ class ItemCard extends StatelessWidget {
       color: Theme.of(context).colorScheme.secondary,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
@@ -32,6 +35,30 @@ class ItemCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => NewsFormPage()),
+            );
+          } else if (item.name == "Logout") {
+            final request = context.read<CookieRequest>();
+            request.logout("http://localhost:8000/auth/logout/").then((_) {
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              }
+            }).catchError((e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Logout failed: $e')),
+                );
+              }
+            });
+          }
+          else if (item.name == "See Football News") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NewsEntryListPage()
+              ),
             );
           }
         },
